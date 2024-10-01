@@ -1,0 +1,243 @@
+.cards {
+  @mixin mod($mod) {
+    @include modifier("cards", $mod){
+      @content;
+    }
+  }
+  @mixin mods($mods...) {
+    @for $i from 0 to length($mods) {
+      .cards_#{nth($mods, $i + 1)} & {
+        @content;
+      }
+    }
+  }
+  @mixin item($mod) {
+    @include modifier("cards__item", $mod){
+      @content;
+    }
+  }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  &__block{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    @include option(padding, 20px 0);
+    box-sizing: border-box;
+  }
+
+  &__panel, &__header{
+    width: 100%;
+    @include option(height, 80px);
+    background: gray;
+  }
+
+  &__items{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    @include option(margin, 0 auto 20px);
+  }
+
+  &__item{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @include option(width, 260px);
+    @include option(height, 380px);
+    @include option(margin, auto);
+    transition: opacity 0.3s;
+    opacity: 0;
+    font-family: monospace;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+    &_active{
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &_left{
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    &_right{
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
+  &__item-block{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+    transition: transform .7s linear;
+
+    @include item("back"){
+      transform: rotateY(180deg);
+    }
+  }
+
+  &__item-side{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @include option(padding, 20px);
+    @include option(border-radius, 20px);
+    border: solid $BLACK;
+    @include option(border-width, 4px);
+    box-sizing: border-box;
+    background-color: $WHITE;
+    @include option(font-size, 25px);
+    backface-visibility: hidden;
+
+    &_front{
+      transform: rotateY(0deg);
+      z-index: 2;
+    }
+
+    &_back{
+      transform: rotateY(-180deg);
+    }
+  }
+
+  &__item-button{
+    position: absolute;
+    display: inline-block;
+    @include option(bottom, 5px);
+    @include option(right, 5px);
+    @include option(width, 50px);
+    @include option(height, 50px);
+
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__item-info{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__item-info-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($BLACK, 0.5);
+
+    .cards__item-info-enter & {
+      opacity: 0;
+    }
+
+    .cards__item-info-enter-active & {
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .cards__item-info-exit & {
+      opacity: 1;
+    }
+
+    .cards__item-info-exit-active & {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+  }
+
+  &__item-info-block{
+    position: relative;
+    @include option(width, 320px);
+    @include option(padding, 20px);
+    @include option(border-radius, 20px);
+    background-color: $WHITE;
+    text-align: center;
+    box-sizing: border-box;
+
+    .cards__item-info-enter & {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+
+    .cards__item-info-enter-active & {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .cards__item-info-exit & {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .cards__item-info-exit-active & {
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+  }
+
+  &__item-info-title{
+    @include option(font-size, 20px);
+  }
+
+  &__item-info-text{
+    @include option(margin, 10px auto 0);
+    @include option(font-size, 17px);
+    line-height: 1.2;
+  }
+
+  &__nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    @include option(height, 100px);
+  }
+
+  &__nav-item{
+    @include option(width, 100px);
+    @include option(height, 100px);
+    @include option(margin, 0 15px);
+
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

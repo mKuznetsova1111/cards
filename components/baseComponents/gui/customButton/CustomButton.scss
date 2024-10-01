@@ -1,0 +1,165 @@
+.custom-button {
+  @mixin mod($mod) {
+    @include modifier("custom-button", $mod) {
+      @content;
+    }
+  }
+
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  @include option(width, 360px, 312px);
+  @include option(min-width, 0);
+  @include option(height, 60px, 50px);
+  @include option(border-radius, 12px);
+  padding: 0;
+  border: none;
+  text-transform: uppercase;
+  font-weight: 500;
+  background-color: $BLUE;
+  font-family: $BASE-FONT;
+  cursor: pointer;
+  text-decoration: none;
+  max-width: 100%;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+  &_transparent {
+    background-color: transparent;
+  }
+
+  &_back {
+    @include option(width, 48px, 32px);
+    @include option(height, 48px, 32px);
+  }
+
+  &_border {
+    background: none;
+    border: 1px solid $BLACK;
+    box-sizing: border-box;
+  }
+
+  &_icon {
+    @include option(width, 50px);
+    @include option(height, 50px);
+  }
+
+  &_close-icon {
+    @include option(width, 22px);
+    @include option(height, 22px);
+  }
+
+  &_generate {
+    @include option(width, auto);
+    @include option(min-width, 0);
+    @include option(height, 32px, 24px);
+  }
+
+  &_player{
+    background-color: $GREEN;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    background-color: rgba(#6B6B6B, 0.24);
+
+    .button__text {
+      background-color: rgba($WHITE, 0.6);
+    }
+  }
+
+  &:disabled.custom-button_transparent {
+    background-color:transparent;
+  }
+
+  &__text {
+    @include option(font-size, 16px, 16px);
+    color: $BLACK;
+    transition: opacity 0.3s ease-in-out 0.2s;
+    @include mod("generate") {
+      order: 2;
+    }
+    @include mod("hideContent") {
+      opacity: 0;
+      transition-delay: 0s
+    }
+    @include mod("rev") {
+      order: 2;
+    }
+  }
+
+  &__image {
+    display: flex;
+    @include option(width, 32px);
+    @include option(height, 32px);
+    @include option(margin, 0 0 0 8px);
+    transition: opacity 0.3s ease-in-out 0.2s;
+    @include mod("icon") {
+      width: 100%;
+      height: 100%;
+      @include option(margin, 0);
+    }
+    @include mod("generate") {
+      @include option(width, 32px, 24px);
+      @include option(height, 32px, 24px);
+      @include option(margin, 0 8px 0 0, 0 4px 0 0);
+      order: 1;
+    }
+    @include mod("hideContent") {
+      opacity: 0;
+      transition-delay: 0s
+    }
+    @include mod("rotate") {
+      transform: rotate(-180deg);
+    }
+    @include mod("rev") {
+      order: 1;
+      @include option(margin, 0 8px 0 0);
+    }
+    @include mod("player") {
+      width: 50%;
+      height: 50%;
+    }
+
+    svg, img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__load {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @include option(width, 32px);
+    @include option(height, 32px);
+    @include option(margin, auto);
+    svg, img {
+      width: 100%;
+      height: 100%;
+    }
+
+    &-enter{
+      opacity: 0;
+    }
+    &-enter-active{
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out 0.3s;
+    }
+
+    &-exit{
+      opacity: 1;
+    }
+    &-exit-active{
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+  }
+}
