@@ -2,17 +2,21 @@ import React, {useState} from "react";
 import * as PropTypes from "prop-types";
 import classNames from "classnames";
 import CardsItem from "./CardsItem";
+import {useApp, setFilter, nextWord, restart} from "../../redux/reducer/app";
+import {useDispatch} from "react-redux";
+import Icon from "../baseComponents/gui/icon/Icon";
 
 
-export default function Cards({className, list}) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function Cards({className}) {
+  const dispatch = useDispatch();
   const [wordState, setWordState] = useState(null);
+  const {list, isFilter, activeWord} = useApp();
 
   function click(state){
     setWordState(state);
     const t = setTimeout(() => {
       setWordState(null);
-      setActiveIndex(activeIndex + 1 < list.length ? activeIndex + 1 : activeIndex);
+      dispatch(nextWord());
     }, 400)
 
     return () => clearTimeout(t);
@@ -20,6 +24,7 @@ export default function Cards({className, list}) {
   return (
     <div className={classNames("cards", className)}>
       <div className={"cards__header"}>
+        <div className={"cards__header-counter"}>{activeWord + 1}/{list.length}</div>
       </div>
       <div className={"cards__block"}>
         <div className={"cards__items"}>
@@ -31,8 +36,8 @@ export default function Cards({className, list}) {
               pinyin={pinyin}
               example={example}
               className={classNames({
-                [`cards__item_active`]: activeIndex === index,
-                [`cards__item_${wordState}`]: activeIndex === index && wordState !== null
+                [`cards__item_active`]: activeWord === index,
+                [`cards__item_${wordState}`]: activeWord === index && wordState !== null
               })}
             />
           ))}
@@ -43,6 +48,10 @@ export default function Cards({className, list}) {
         </div>
       </div>
       <div className={"cards__panel"}>
+        <div className={"cards__panel-item"}><img src={"/images/list.svg"}/></div>
+        <div className={`cards__panel-item ${isFilter ? "cards__panel-item_active" : ""}`} onClick={() => dispatch(setFilter(!isFilter))}><Icon name={"filter"}/></div>
+        <div className={"cards__panel-item"} onClick={() => dispatch(restart())}><img src={"/images/restart.svg"}/></div>
+        <div className={"cards__panel-item"}><img src={"/images/shuffle.svg"}/></div>
       </div>
     </div>
   );

@@ -5,10 +5,12 @@ import defaultPage from "../constants/page-description";
 import getContent from "../hooks/useContent";
 
 export default function Home() {
+  getContent();
+  
   return (
     <div className="container">
       <PageDescription {...defaultPage}/>
-      <Cards list={getContent()}/>
+      <Cards/>
     </div>
   );
 }
