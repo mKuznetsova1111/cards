@@ -5,6 +5,21 @@ import Builder from "../../utils/redux/builder";
  * @type {string}
  */
 
+function random(n) {
+  return Math.floor(Math.random() * Math.floor(n));
+}
+
+function shuffle(arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var j = random(arr.length);
+    var k = random(arr.length);
+    var t = arr[j];
+    arr[j] = arr[k];
+    arr[k] = t;
+  }
+  return arr;
+}
+
 const builder = new Builder({
   name: "app", 
   initialState: {
@@ -33,9 +48,22 @@ const builder = new Builder({
         state.list = state.listFull
       }
     }, 
-    restart(state, action){
+    restart(state){
       state.again = [];
       state.activeWord = 0;
+    }, 
+    shuffleList(state, action){
+      if (action.payload){
+        state.isShuffle = true;
+        state.list = shuffle(state.list)
+      } else {
+        state.isShuffle = false;
+        if (state.isFilter){
+          state.list = state.listFull.filter(({isHSK5}) => isHSK5 === true)
+        } else {
+          state.list = state.listFull;
+        }
+      }
     }
   }
 })
@@ -45,5 +73,5 @@ builder.create();
 const app = builder.export();
 
 export const {useApp} = app.selectors;
-export const {nextWord, getList, setFilter, restart} = app.actions;
+export const {nextWord, getList, setFilter, restart, shuffleList} = app.actions;
 export default app;

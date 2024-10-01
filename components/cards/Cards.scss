@@ -52,7 +52,7 @@
     @include option(margin, 10px 0);
     @include option(border-radius, 15px);
     border: solid $BLACK;
-    @include option(border-width, 2px);
+    @include option(border-width, 3px);
     box-sizing: border-box;
   }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PublicGoogleSheetsParser from 'public-google-sheets-parser';
-import {getList, useApp} from "../redux/reducer/app";
+import {getList, useApp, setFilter, shuffleList} from "../redux/reducer/app";
 import {useDispatch} from "react-redux";
 
 // const REACT_APP_GOOGLE_SHEETS_ID = `1qfpcm_Yul_x_4xgkO1zboopFp8TZPDSBOPiC0XrfR8k`;
