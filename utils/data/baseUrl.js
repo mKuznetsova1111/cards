@@ -1,7 +1,8 @@
-export default function baseUrl(url, isStory) {
-  return `${process.env.assetPrefix ?? `${isStory ? "" : "/"}`}${url}`;
+export default function baseUrl(url) {
+  // return `${process.env.assetPrefix ?? "/"}${url}`;
+  return `${url}`;
 }
 
-export function image(url, isStory) {
-  return baseUrl(`images/${url}`, isStory)
+export function image(url) {
+  return baseUrl(`images/${url}`)
 }

@@ -1,7 +1,6 @@
 import React, {useEffect, startTransition} from "react";
 import * as PropTypes from "prop-types";
 
-
 export default function Icon({name, ...rest}) {
   const ImportedIconRef = React.useRef(null);
   const [loading, setLoading] = React.useState(false);

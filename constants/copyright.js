@@ -1,3 +1,5 @@
+import {image} from "../utils/data/baseUrl";
+
 export const header = {
   menuList: {
     customMenuItems: [
@@ -14,3 +16,23 @@ export const header = {
     ]
   }
 };
+
+
+export const panel = [
+  {
+    image: image("list.svg"),
+    action: "list"
+  },
+  {
+    image: image("filter.svg"),
+    action: "filter"
+  },
+  {
+    image: image("restart.svg"),
+    action: "restart"
+  },
+  {
+    image: image("shuffle.svg"),
+    action: "shuffle"
+  }
+]

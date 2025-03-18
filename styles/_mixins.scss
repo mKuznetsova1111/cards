@@ -90,7 +90,11 @@
 
 
 @mixin option($n, $v, $vm: $v, $vt: $vm) {
-  #{$n}: vwm($vm);
+  #{$n}: vh($v);
+
+  @include MOBILE{
+    #{$n}: vwm($v);
+  }
 }
 
 @mixin option-mob($n, $vm, $vt: $vm){

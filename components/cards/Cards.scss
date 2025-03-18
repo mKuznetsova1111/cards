@@ -35,9 +35,12 @@
     align-items: center;
     position: relative;
     width: 100%;
-    height: 100%;
     @include option(padding, 0px 0);
     box-sizing: border-box;
+
+    @include MOBILE{
+      height: 100%;
+    }
   }
 
   &__panel, &__header{
@@ -49,7 +52,7 @@
     @include option(padding, 0);
     @include option(height, 80px);
     @include option(min-height, 80px);
-    @include option(margin, 10px 0);
+    @include option(margin, 20px 0, 10px 0);
     @include option(border-radius, 15px);
     border: solid $BLACK;
     @include option(border-width, 3px);
@@ -67,9 +70,6 @@
     img, svg{
       width: 100%;
       height: 100%;
-      path{
-        transiiton: fill 0.3s;
-      }
     }
 
     &:active{
@@ -77,11 +77,12 @@
     }
 
     &_active{
-      svg{
-        .color{
-          fill: rgb(0 241 255);
-        }
-      }
+      filter: contrast(1.5);
+    }
+
+    &_disabled {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
 
@@ -98,8 +99,12 @@
   &__items{
     position: relative;
     width: 100%;
-    height: 100%;
+    @include option(height, 380px, auto);
     @include option(margin, 0 auto 0);
+
+    @include MOBILE{
+      height: 100%;
+    }
   }
 
   &__item{
@@ -110,12 +115,15 @@
     right: 0;
     @include option(width, 260px);
     @include option(height, 380px);
-    max-height: 100%;
     @include option(margin, auto);
     transition: opacity 0.3s;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+    @include MOBILE{
+      max-height: 100%;
+    }
 
     &_active{
       opacity: 1;
@@ -187,6 +195,10 @@
       width: 100%;
       height: 100%;
     }
+  }
+  
+  &__item-word{
+    opacity: 0.2;
   }
 
   &__item-info{

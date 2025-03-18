@@ -1,4 +1,5 @@
 import Builder from "../../utils/redux/builder";
+import {useDispatch} from "react-redux";
 
 /**
  * slice name
@@ -30,6 +31,8 @@ const builder = new Builder({
     activeWord: 0, 
     isFilter: true, 
     isShuffle: false, 
+    isLoaded: false, 
+    filterStartType: "isHSK5",
   }, 
   reducers: {
     nextWord(state) {
@@ -40,9 +43,11 @@ const builder = new Builder({
       state.listFull = action.payload;
     }, 
     setFilter(state, action){
-      if (action.payload){
+      if (state.activeWord > 0) return;
+      const {isFilter, type} = action.payload;
+      if (isFilter){
         state.isFilter = true;
-        state.list = state.list.filter(({isHSK5}) => isHSK5 === true)
+        state.list = state.list.filter((item) => item[type] === true)
       } else {
         state.isFilter = false;
         state.list = state.listFull
@@ -53,25 +58,30 @@ const builder = new Builder({
       state.activeWord = 0;
     }, 
     shuffleList(state, action){
+      if (state.activeWord > 0) return;
       if (action.payload){
         state.isShuffle = true;
         state.list = shuffle(state.list)
       } else {
         state.isShuffle = false;
-        if (state.isFilter){
-          state.list = state.listFull.filter(({isHSK5}) => isHSK5 === true)
-        } else {
-          state.list = state.listFull;
-        }
+        state.list = state.list;
       }
+    }, 
+    setLoaded(state, action){
+      state.isLoaded = true;
     }
   }
 })
 
 builder.create();
 
+export function initApp(){
+  const dispatch = useDispatch();
+  const {isFilter, isShuffle, filterStartType} = useApp();
+}
+
 const app = builder.export();
 
 export const {useApp} = app.selectors;
-export const {nextWord, getList, setFilter, restart, shuffleList} = app.actions;
+export const {nextWord, getList, setFilter, restart, shuffleList, setLoaded} = app.actions;
 export default app;
