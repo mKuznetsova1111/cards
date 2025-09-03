@@ -25,7 +25,9 @@ const builder = new Builder({
   name: "app", 
   initialState: {
     listFull: [],
+    listCurrent: [],
     list: [],
+    listNoShuffle: [],
     again: [],
     page: "cards",
     activeWord: 0, 
@@ -41,16 +43,19 @@ const builder = new Builder({
     getList(state, action){
       state.list = action.payload;
       state.listFull = action.payload;
+      state.listCurrent = action.payload;
+      state.listNoShuffle = action.payload;
     }, 
     setFilter(state, action){
       if (state.activeWord > 0) return;
       const {isFilter, type} = action.payload;
       if (isFilter){
         state.isFilter = true;
-        state.list = state.list.filter((item) => item[type] === true)
+        const newList = state.list.filter((item) => item[type] === true);
+        state.list = newList;
       } else {
         state.isFilter = false;
-        state.list = state.listFull
+        state.list = state.listFull;
       }
     }, 
     restart(state){
@@ -67,6 +72,18 @@ const builder = new Builder({
         state.list = state.list;
       }
     }, 
+    getFiltered(state, action){
+      const {isShuffle, filterType} = action.payload;
+      const middleList = state.listCurrent;
+      console.log(filterType)
+      if (!filterType){
+        middleList.filter((item) => item[filterType] === true);
+      }
+      if (!isShuffle) {
+        shuffle(middleList);
+      }
+      state.list = middleList;
+    },
     setLoaded(state, action){
       state.isLoaded = true;
     }
@@ -80,8 +97,25 @@ export function initApp(){
   const {isFilter, isShuffle, filterStartType} = useApp();
 }
 
+// function getFiltered(filterType, filterInfo){
+//   const {list, type} = filterInfo;
+//   const actions = {
+//     filter: () => ,
+//     shuffle: () => ,
+//   }
+
+// }
+
+// function getFiltered(list, type){
+//   return list.filter((item) => item[type] === true);
+// }
+
+// function getShuffled(list){
+//   return shuffle(list);
+// }
+
 const app = builder.export();
 
 export const {useApp} = app.selectors;
-export const {nextWord, getList, setFilter, restart, shuffleList, setLoaded} = app.actions;
+export const {nextWord, getList, setFilter, restart, shuffleList, setLoaded, getFiltered} = app.actions;
 export default app;

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import * as PropTypes from "prop-types";
 import classNames from "classnames";
 import CardsItem from "./CardsItem";
-import {useApp, setFilter, nextWord, restart, shuffleList} from "../../redux/reducer/app";
+import {useApp, setFilter, nextWord, restart, shuffleList, getFiltered} from "../../redux/reducer/app";
 import {useDispatch} from "react-redux";
 import Icon from "../baseComponents/gui/icon/Icon";
 import {image} from "../../utils/data/baseUrl";
@@ -19,14 +19,16 @@ export default function Cards({className}) {
 
   const actions = {
     filter: () => { 
-      dispatch(setFilter({isFilter: !isFilter, type: "isHSK5"})) 
+      // dispatch(setFilter({isFilter: !isFilter, type: "isHSK5"})) 
+      dispatch(getFiltered({isShuffle, filterType: activeAction.filter ? "isHSK5" : false}))
       setActiveAction({filter: !activeAction.filter, shuffle: activeAction.shuffle})
     },
     restart: () => { 
       dispatch(restart()) 
     },
     shuffle: () => { 
-      dispatch(shuffleList(!isShuffle));
+      // dispatch(shuffleList(!isShuffle));
+      dispatch(getFiltered({isShuffle: true}))
       setActiveAction({filter: activeAction.filter, shuffle: !activeAction.shuffle})
     },
   }
